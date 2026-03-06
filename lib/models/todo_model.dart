@@ -24,6 +24,12 @@ class TodoModel extends HiveObject {
   @HiveField(6)
   final DateTime updatedAt;
 
+  @HiveField(7)
+  final DateTime? dueDate;
+
+  @HiveField(8)
+  final String priority; // Low, Medium, High
+
   TodoModel({
     required this.id,
     required this.ownerEmail,
@@ -32,6 +38,8 @@ class TodoModel extends HiveObject {
     required this.completed,
     required this.createdAt,
     required this.updatedAt,
+    this.dueDate,
+    this.priority = 'Medium',
   });
 
   TodoModel copyWith({
@@ -39,6 +47,9 @@ class TodoModel extends HiveObject {
     String? encryptedNote,
     bool? completed,
     DateTime? updatedAt,
+    DateTime? dueDate,
+    bool clearDueDate = false,
+    String? priority,
   }) {
     return TodoModel(
       id: id,
@@ -48,11 +59,13 @@ class TodoModel extends HiveObject {
       completed: completed ?? this.completed,
       createdAt: createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
+      dueDate: clearDueDate ? null : (dueDate ?? this.dueDate),
+      priority: priority ?? this.priority,
     );
   }
 }
 
-/// Manual Hive adapter (no build_runner needed).
+/// Manual Hive adapter
 class TodoModelAdapter extends TypeAdapter<TodoModel> {
   @override
   final int typeId = 2;
@@ -61,10 +74,12 @@ class TodoModelAdapter extends TypeAdapter<TodoModel> {
   TodoModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{};
+
     for (int i = 0; i < numOfFields; i++) {
       final key = reader.readByte();
       fields[key] = reader.read();
     }
+
     return TodoModel(
       id: fields[0] as String,
       ownerEmail: fields[1] as String,
@@ -73,13 +88,15 @@ class TodoModelAdapter extends TypeAdapter<TodoModel> {
       completed: fields[4] as bool,
       createdAt: fields[5] as DateTime,
       updatedAt: fields[6] as DateTime,
+      dueDate: fields[7] as DateTime?,
+      priority: (fields[8] as String?) ?? 'Medium',
     );
   }
 
   @override
   void write(BinaryWriter writer, TodoModel obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -93,6 +110,10 @@ class TodoModelAdapter extends TypeAdapter<TodoModel> {
       ..writeByte(5)
       ..write(obj.createdAt)
       ..writeByte(6)
-      ..write(obj.updatedAt);
+      ..write(obj.updatedAt)
+      ..writeByte(7)
+      ..write(obj.dueDate)
+      ..writeByte(8)
+      ..write(obj.priority);
   }
 }

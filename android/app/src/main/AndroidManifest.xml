@@ -2,6 +2,7 @@
     package="com.example.cipher_task">
 
     <!-- ✅ MUST be here: directly under <manifest> -->
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
     <uses-permission android:name="android.permission.USE_FINGERPRINT" />
 

@@ -17,6 +17,8 @@ class TodoViewModel extends ChangeNotifier {
   bool get isBusy => _busy;
   String? get error => _error;
 
+  static const List<String> priorities = ['Low', 'Medium', 'High'];
+
   TodoViewModel(this._db, this._crypto);
 
   void clearError() {
@@ -33,10 +35,32 @@ class TodoViewModel extends ChangeNotifier {
     return _crypto.decryptSensitiveNote(todo.encryptedNote);
   }
 
+  int get totalCount => _todos.length;
+
+  int get completedCount => _todos.where((t) => t.completed).length;
+
+  int get pendingCount => _todos.where((t) => !t.completed).length;
+
+  int get overdueCount {
+    final now = DateTime.now();
+    return _todos.where((t) {
+      return !t.completed &&
+          t.dueDate != null &&
+          t.dueDate!.isBefore(now);
+    }).length;
+  }
+
+  bool isOverdue(TodoModel todo) {
+    if (todo.completed || todo.dueDate == null) return false;
+    return todo.dueDate!.isBefore(DateTime.now());
+  }
+
   Future<bool> addTodo({
     required String ownerEmail,
     required String title,
     required String notePlaintext,
+    DateTime? dueDate,
+    required String priority,
   }) async {
     _setBusy(true);
     try {
@@ -44,6 +68,12 @@ class TodoViewModel extends ChangeNotifier {
         _error = 'Title is required.';
         return false;
       }
+
+      if (!priorities.contains(priority)) {
+        _error = 'Invalid priority.';
+        return false;
+      }
+
       final now = DateTime.now();
       final encrypted = _crypto.encryptSensitiveNote(notePlaintext);
 
@@ -55,7 +85,10 @@ class TodoViewModel extends ChangeNotifier {
         completed: false,
         createdAt: now,
         updatedAt: now,
+        dueDate: dueDate,
+        priority: priority,
       );
+
       await _db.upsertTodo(todo);
       loadTodos(ownerEmail);
       _error = null;
@@ -73,6 +106,8 @@ class TodoViewModel extends ChangeNotifier {
     required TodoModel existing,
     required String newTitle,
     required String newNotePlaintext,
+    DateTime? dueDate,
+    required String priority,
   }) async {
     _setBusy(true);
     try {
@@ -80,12 +115,26 @@ class TodoViewModel extends ChangeNotifier {
         _error = 'Title is required.';
         return false;
       }
+
+      if (!priorities.contains(priority)) {
+        _error = 'Invalid priority.';
+        return false;
+      }
+
       final encrypted = _crypto.encryptSensitiveNote(newNotePlaintext);
-      final updated = existing.copyWith(
+
+      final updated = TodoModel(
+        id: existing.id,
+        ownerEmail: existing.ownerEmail,
         title: newTitle.trim(),
         encryptedNote: encrypted,
+        completed: existing.completed,
+        createdAt: existing.createdAt,
         updatedAt: DateTime.now(),
+        dueDate: dueDate,
+        priority: priority,
       );
+
       await _db.upsertTodo(updated);
       loadTodos(ownerEmail);
       _error = null;

@@ -214,12 +214,6 @@ class _RegisterViewState extends State<RegisterView> {
                         ? const SizedBox(height: 18, width: 18, child: CircularProgressIndicator(strokeWidth: 2))
                         : Text(_otpStage ? 'Confirm OTP & Create Account' : 'Generate OTP (Simulation)'),
                   ),
-
-                  const SizedBox(height: 10),
-                  const Text(
-                    'Note: OTP is a simulation for lab demonstration only.',
-                    style: TextStyle(color: Colors.white54),
-                  ),
                 ],
               ),
             ),
