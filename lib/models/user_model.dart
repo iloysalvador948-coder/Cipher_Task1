@@ -2,47 +2,21 @@ import 'package:hive/hive.dart';
 
 @HiveType(typeId: 1)
 class UserModel extends HiveObject {
-  @HiveField(0)
-  final String email;
-
-  @HiveField(1)
-  final List<int> passwordHash;
-
-  @HiveField(2)
-  final List<int> salt;
-
-  @HiveField(3)
-  bool biometricsEnabled;
-
-  @HiveField(4)
-  bool hasLoggedInOnce;
-
-  @HiveField(5)
-  String? displayName;
-
-  @HiveField(6)
-  String? photoUrl;
-
-  @HiveField(7)
-  bool isGoogleUser;
-
-  @HiveField(8)
-  String? phone;
-
-  @HiveField(9)
-  String? bio;
-
-  @HiveField(10)
-  String? location;
-
-  @HiveField(11)
-  String? jobTitle;
-
-  @HiveField(12)
-  String? birthday; // "yyyy-MM-dd"
-
-  @HiveField(13)
-  DateTime? memberSince;
+  @HiveField(0)  final String    email;
+  @HiveField(1)  final List<int> passwordHash;
+  @HiveField(2)  final List<int> salt;
+  @HiveField(3)  bool      biometricsEnabled;
+  @HiveField(4)  bool      hasLoggedInOnce;
+  @HiveField(5)  String?   displayName;
+  @HiveField(6)  String?   photoUrl;       // URL from Google
+  @HiveField(7)  bool      isGoogleUser;
+  @HiveField(8)  String?   phone;
+  @HiveField(9)  String?   bio;
+  @HiveField(10) String?   location;
+  @HiveField(11) String?   jobTitle;
+  @HiveField(12) String?   birthday;
+  @HiveField(13) DateTime? memberSince;
+  @HiveField(14) String?   localPhotoPath; // local file from camera/gallery
 
   UserModel({
     required this.email,
@@ -52,13 +26,14 @@ class UserModel extends HiveObject {
     this.hasLoggedInOnce   = false,
     this.displayName,
     this.photoUrl,
-    this.isGoogleUser  = false,
+    this.isGoogleUser    = false,
     this.phone,
     this.bio,
     this.location,
     this.jobTitle,
     this.birthday,
     this.memberSince,
+    this.localPhotoPath,
   });
 }
 
@@ -68,9 +43,9 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
 
   @override
   UserModel read(BinaryReader reader) {
-    final numOfFields = reader.readByte();
-    final fields      = <int, dynamic>{};
-    for (int i = 0; i < numOfFields; i++) {
+    final n      = reader.readByte();
+    final fields = <int, dynamic>{};
+    for (int i = 0; i < n; i++) {
       final key = reader.readByte();
       fields[key] = reader.read();
     }
@@ -89,13 +64,14 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       jobTitle:           fields[11] as String?,
       birthday:           fields[12] as String?,
       memberSince:        fields[13] as DateTime?,
+      localPhotoPath:     fields[14] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, UserModel obj) {
     writer
-      ..writeByte(14)
+      ..writeByte(15)
       ..writeByte(0)  ..write(obj.email)
       ..writeByte(1)  ..write(obj.passwordHash)
       ..writeByte(2)  ..write(obj.salt)
@@ -109,6 +85,7 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       ..writeByte(10) ..write(obj.location)
       ..writeByte(11) ..write(obj.jobTitle)
       ..writeByte(12) ..write(obj.birthday)
-      ..writeByte(13) ..write(obj.memberSince);
+      ..writeByte(13) ..write(obj.memberSince)
+      ..writeByte(14) ..write(obj.localPhotoPath);
   }
 }

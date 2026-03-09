@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:screen_protector/screen_protector.dart';
+import 'package:vibration/vibration.dart';
 
 import 'services/database_service.dart';
 import 'services/email_otp_service.dart';
@@ -23,20 +24,17 @@ import 'views/login_view.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // ── Screen protection ──────────────────────────────────────────────────────
   try { await ScreenProtector.preventScreenshotOn(); } catch (_) {}
 
-  // ── Firebase ───────────────────────────────────────────────────────────────
   try {
     await Firebase.initializeApp();
     // ignore: avoid_print
     print('[main] Firebase initialized.');
   } catch (e) {
     // ignore: avoid_print
-    print('[main] Firebase init skipped / failed: $e');
+    print('[main] Firebase init skipped: $e');
   }
 
-  // ── Encrypted local DB ─────────────────────────────────────────────────────
   const secureStorage     = FlutterSecureStorage();
   final keyStorageService = KeyStorageService(secureStorage);
   final dbKey32           = await keyStorageService.getOrCreateDbKey32();
@@ -47,27 +45,24 @@ Future<void> main() async {
   final cryptoService  = EncryptionService(dbKey32);
   final sessionService = SessionService();
 
-  // ── Theme ──────────────────────────────────────────────────────────────────
   final themeVm = ThemeViewModel();
   await themeVm.load();
 
-  runApp(
-    CipherTaskApp(
-      keyStorageService: keyStorageService,
-      databaseService:   dbService,
-      encryptionService: cryptoService,
-      sessionService:    sessionService,
-      themeViewModel:    themeVm,
-    ),
-  );
+  runApp(CipherTaskApp(
+    keyStorageService: keyStorageService,
+    databaseService:   dbService,
+    encryptionService: cryptoService,
+    sessionService:    sessionService,
+    themeViewModel:    themeVm,
+  ));
 }
 
 class CipherTaskApp extends StatelessWidget {
-  final KeyStorageService  keyStorageService;
-  final DatabaseService    databaseService;
-  final EncryptionService  encryptionService;
-  final SessionService     sessionService;
-  final ThemeViewModel     themeViewModel;
+  final KeyStorageService keyStorageService;
+  final DatabaseService   databaseService;
+  final EncryptionService encryptionService;
+  final SessionService    sessionService;
+  final ThemeViewModel    themeViewModel;
 
   const CipherTaskApp({
     super.key,
@@ -100,49 +95,72 @@ class CipherTaskApp extends StatelessWidget {
               ctx.read<FirebaseAuthService>(),
             );
 
-            // ── Vibration timer (fires HapticFeedback every 800ms) ─────────
-            Timer? _warningVibTimer;
+            Timer? _vibTimer;
 
-            void _stopVibration() {
-              _warningVibTimer?.cancel();
-              _warningVibTimer = null;
+            // ── Stop all vibration ────────────────────────────────────
+            Future<void> _stopVib() async {
+              _vibTimer?.cancel();
+              _vibTimer = null;
+              try { await Vibration.cancel(); } catch (_) {}
             }
 
-            void _startVibration() {
-              _stopVibration();
-              // Immediately vibrate once, then repeat every 800ms
-              HapticFeedback.heavyImpact();
-              _warningVibTimer = Timer.periodic(
-                const Duration(milliseconds: 800),
-                (_) => HapticFeedback.heavyImpact(),
-              );
+            // ── Start repeating strong vibration ─────────────────────
+            // Vibrates: 400ms on, 400ms off, repeating every 800ms
+            Future<void> _startVib() async {
+              await _stopVib();
+
+              final hasVib = await Vibration.hasVibrator() ?? false;
+              if (!hasVib) {
+                // Fallback to HapticFeedback if no vibrator found
+                HapticFeedback.heavyImpact();
+                _vibTimer = Timer.periodic(
+                  const Duration(milliseconds: 800),
+                  (_) => HapticFeedback.heavyImpact(),
+                );
+                return;
+              }
+
+              final hasAmplitude =
+                  await Vibration.hasAmplitudeControl() ?? false;
+
+              if (hasAmplitude) {
+                // Strong pulse with amplitude control (most modern Androids)
+                Vibration.vibrate(
+                  pattern:    [0, 400, 400, 400, 400, 400],
+                  intensities: [0, 255,   0, 200,   0, 180],
+                  repeat: 0, // repeat from index 0
+                );
+              } else {
+                // Basic pattern repeat for older devices
+                Vibration.vibrate(
+                  pattern: [0, 500, 300],
+                  repeat: 0,
+                );
+              }
             }
 
-            // ── Session callbacks ──────────────────────────────────────────
             sessionService.onWarningStart = () async {
-              // Snackbar
               Constants.scaffoldMessengerKey.currentState
                 ?..hideCurrentSnackBar()
-                ..showSnackBar(
-                  const SnackBar(
-                    duration: Duration(seconds: Constants.sessionWarningSeconds),
-                    content:  Text(
-                      '⚠️  Session expires in 30 s – tap anywhere to stay signed in.',
-                    ),
+                ..showSnackBar(const SnackBar(
+                  duration: Duration(seconds: Constants.sessionWarningSeconds),
+                  content:  Text(
+                    '⚠️  Session expires in 30 s – tap anywhere to stay signed in.',
                   ),
-                );
-              // Vibrate
-              _startVibration();
+                ));
+              await _startVib();
             };
 
             sessionService.onWarningDismiss = () async {
-              Constants.scaffoldMessengerKey.currentState?.hideCurrentSnackBar();
-              _stopVibration();
+              Constants.scaffoldMessengerKey.currentState
+                  ?.hideCurrentSnackBar();
+              await _stopVib();
             };
 
             sessionService.onTimeoutLock = () async {
-              _stopVibration();
-              Constants.scaffoldMessengerKey.currentState?.hideCurrentSnackBar();
+              await _stopVib();
+              Constants.scaffoldMessengerKey.currentState
+                  ?.hideCurrentSnackBar();
               vm.onSessionTimedOut();
               Constants.navigatorKey.currentState?.pushAndRemoveUntil(
                 MaterialPageRoute(builder: (_) => const LoginView()),
