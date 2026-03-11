@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The State of Cybersecurity - Infographic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        /* Subtle Grid Background for that "Tech/Cyber" feel */
+        .bg-grid-pattern {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #09090b; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #27272a; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3f3f46; 
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        background: '#09090b', // zinc-950
+                        foreground: '#fafafa', // zinc-50
+                        muted: '#27272a',      // zinc-800
+                        'muted-foreground': '#a1a1aa', // zinc-400
+                        card: '#09090b',
+                        'card-foreground': '#fafafa',
+                        popover: '#09090b',
+                        'popover-foreground': '#fafafa',
+                        border: '#27272a',     // zinc-800
+                        input: '#27272a',
+                        primary: '#fafafa',
+                        'primary-foreground': '#18181b', // zinc-900
+                        secondary: '#27272a',
+                        'secondary-foreground': '#fafafa',
+                        accent: '#27272a',
+                        'accent-foreground': '#fafafa',
+                        destructive: '#7f1d1d', // red-900
+                        'destructive-foreground': '#fafafa',
+                        ring: '#d4d4d8',       // zinc-300
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-foreground antialiased min-h-screen relative selection:bg-zinc-800 selection:text-zinc-50 overflow-x-hidden">
+    
+    <!-- Background Grid -->
+    <div class="absolute inset-0 bg-grid-pattern z-0 pointer-events-none h-[800px]"></div>
+    <!-- Ambient Glow -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-zinc-800/20 blur-[120px] rounded-full z-0 pointer-events-none"></div>
+
+    <main class="relative z-10 max-w-5xl mx-auto px-6 py-16 sm:py-24 lg:px-8 flex flex-col gap-16">
+        
+        <!-- Header Section -->
+        <header class="flex flex-col items-center text-center space-y-6">
+            <div class="inline-flex items-center rounded-full border border-border bg-zinc-900/50 px-3 py-1 text-sm font-medium text-zinc-300 backdrop-blur-sm shadow-sm">
+                <i data-lucide="shield-alert" class="mr-2 h-4 w-4 text-zinc-50"></i> 
+                State of Cybersecurity 2026
+            </div>
+            <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-foreground max-w-3xl">
+                The Anatomy of <br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-b from-zinc-100 to-zinc-500">Modern Threats</span>
+            </h1>
+            <p class="max-w-[42rem] leading-relaxed text-muted-foreground sm:text-lg sm:leading-8">
+                A comprehensive overview of the current cybersecurity landscape, dissecting core principles, prominent attack vectors, and essential defensive strategies.
+            </p>
+        </header>
+
+        <!-- Stats Row -->
+        <section class="grid gap-4 md:grid-cols-3">
+            <div class="rounded-xl border border-border bg-card/40 p-6 shadow-sm backdrop-blur-md">
+                <div class="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <h3 class="tracking-tight text-sm font-medium text-muted-foreground">Global Cybercrime Cost</h3>
+                    <i data-lucide="bar-chart-3" class="h-4 w-4 text-zinc-500"></i>
+                </div>
+                <div class="text-3xl font-bold tracking-tight">$10.5T</div>
+                <p class="text-xs text-muted-foreground mt-1 text-zinc-500">Projected annual cost globally.</p>
+            </div>
+            <div class="rounded-xl border border-border bg-card/40 p-6 shadow-sm backdrop-blur-md">
+                <div class="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <h3 class="tracking-tight text-sm font-medium text-muted-foreground">Human Element</h3>
+                    <i data-lucide="users" class="h-4 w-4 text-zinc-500"></i>
+                </div>
+                <div class="text-3xl font-bold tracking-tight">68%</div>
+                <p class="text-xs text-muted-foreground mt-1 text-zinc-500">Breaches involving a non-malicious human.</p>
+            </div>
+            <div class="rounded-xl border border-border bg-card/40 p-6 shadow-sm backdrop-blur-md">
+                <div class="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <h3 class="tracking-tight text-sm font-medium text-muted-foreground">Breach Lifecycle</h3>
+                    <i data-lucide="clock" class="h-4 w-4 text-zinc-500"></i>
+                </div>
+                <div class="text-3xl font-bold tracking-tight">277 Days</div>
+                <p class="text-xs text-muted-foreground mt-1 text-zinc-500">Average time to identify and contain.</p>
+            </div>
+        </section>
+
+        <div class="w-full h-px bg-border my-2"></div>
+
+        <!-- The CIA Triad -->
+        <section class="space-y-6">
+            <div class="space-y-2">
+                <h2 class="text-2xl font-semibold tracking-tight">The CIA Triad</h2>
+                <p class="text-muted-foreground text-sm">The foundational model designed to guide policies for information security within an organization.</p>
+            </div>
+            
+            <div class="grid gap-6 md:grid-cols-3">
+                <!-- Confidentiality -->
+                <div class="group relative rounded-xl border border-border bg-zinc-900/20 p-6 hover:bg-zinc-900/40 transition-colors">
+                    <div class="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-zinc-800">
+                        <i data-lucide="eye-off" class="h-5 w-5 text-zinc-50"></i>
+                    </div>
+                    <h3 class="mb-2 font-semibold tracking-tight">Confidentiality</h3>
+                    <p class="text-sm text-muted-foreground leading-relaxed">
+                        Ensuring that sensitive information is accessed only by an authorized person and kept away from those not authorized.
+                    </p>
+                    <div class="mt-4 flex gap-2">
+                        <span class="inline-flex items-center rounded-md border border-border px-2 py-0.5 text-xs font-medium text-zinc-300">Encryption</span>
+                        <span class="inline-flex items-center rounded-md border border-border px-2 py-0.5 text-xs font-medium text-zinc-300">MFA</span>
+                    </div>
+                </div>
+
+                <!-- Integrity -->
+                <div class="group relative rounded-xl border border-border bg-zinc-900/20 p-6 hover:bg-zinc-900/40 transition-colors">
+                    <div class="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-zinc-800">
+                        <i data-lucide="file-check-2" class="h-5 w-5 text-zinc-50"></i>
+                    </div>
+                    <h3 class="mb-2 font-semibold tracking-tight">Integrity</h3>
+                    <p class="text-sm text-muted-foreground leading-relaxed">
+                        Maintaining the consistency, accuracy, and trustworthiness of data over its entire life cycle without unauthorized alteration.
+                    </p>
+                    <div class="mt-4 flex gap-2">
+                        <span class="inline-flex items-center rounded-md border border-border px-2 py-0.5 text-xs font-medium text-zinc-300">Hashing</span>
+                        <span class="inline-flex items-center rounded-md border border-border px-2 py-0.5 text-xs font-medium text-zinc-300">Audits</span>
+                    </div>
+                </div>
+
+                <!-- Availability -->
+                <div class="group relative rounded-xl border border-border bg-zinc-900/20 p-6 hover:bg-zinc-900/40 transition-colors">
+                    <div class="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-zinc-800">
+                        <i data-lucide="activity" class="h-5 w-5 text-zinc-50"></i>
+                    </div>
+                    <h3 class="mb-2 font-semibold tracking-tight">Availability</h3>
+                    <p class="text-sm text-muted-foreground leading-relaxed">
+                        Ensuring that information and resources are available to authorized users whenever they are needed.
+                    </p>
+                    <div class="mt-4 flex gap-2">
+                        <span class="inline-flex items-center rounded-md border border-border px-2 py-0.5 text-xs font-medium text-zinc-300">Redundancy</span>
+                        <span class="inline-flex items-center rounded-md border border-border px-2 py-0.5 text-xs font-medium text-zinc-300">DDoS Protection</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Threat Landscape & Progress Bars -->
+        <section class="grid gap-12 md:grid-cols-2">
+            <div class="space-y-6">
+                <div>
+                    <h2 class="text-2xl font-semibold tracking-tight">Primary Attack Vectors</h2>
+                    <p class="text-muted-foreground text-sm mt-2">Distribution of successful breaches by method over the last 12 months. Phishing remains the dominant entry point.</p>
+                </div>
+
+                <div class="space-y-6">
+                    <!-- Progress Item -->
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between text-sm">
+                            <div class="flex items-center font-medium">
+                                <i data-lucide="mail-warning" class="h-4 w-4 mr-2 text-zinc-400"></i> Phishing & Social Engineering
+                            </div>
+                            <span class="font-bold text-zinc-50">41%</span>
+                        </div>
+                        <div class="h-2 w-full overflow-hidden rounded-full bg-zinc-800">
+                            <div class="h-full bg-zinc-200" style="width: 41%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Progress Item -->
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between text-sm">
+                            <div class="flex items-center font-medium">
+                                <i data-lucide="key" class="h-4 w-4 mr-2 text-zinc-400"></i> Stolen Credentials
+                            </div>
+                            <span class="font-bold text-zinc-50">29%</span>
+                        </div>
+                        <div class="h-2 w-full overflow-hidden rounded-full bg-zinc-800">
+                            <div class="h-full bg-zinc-300" style="width: 29%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Progress Item -->
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between text-sm">
+                            <div class="flex items-center font-medium">
+                                <i data-lucide="bug" class="h-4 w-4 mr-2 text-zinc-400"></i> Vulnerability Exploitation
+                            </div>
+                            <span class="font-bold text-zinc-50">18%</span>
+                        </div>
+                        <div class="h-2 w-full overflow-hidden rounded-full bg-zinc-800">
+                            <div class="h-full bg-zinc-500" style="width: 18%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Progress Item -->
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between text-sm">
+                            <div class="flex items-center font-medium">
+                                <i data-lucide="ghost" class="h-4 w-4 mr-2 text-zinc-400"></i> Insider Threats
+                            </div>
+                            <span class="font-bold text-zinc-50">12%</span>
+                        </div>
+                        <div class="h-2 w-full overflow-hidden rounded-full bg-zinc-800">
+                            <div class="h-full bg-zinc-600" style="width: 12%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Warning Card -->
+            <div class="rounded-xl border border-zinc-800 bg-gradient-to-br from-zinc-900/50 to-black p-8 flex flex-col justify-center relative overflow-hidden">
+                <i data-lucide="triangle-alert" class="absolute -bottom-6 -right-6 h-48 w-48 text-zinc-800/30"></i>
+                <div class="relative z-10">
+                    <div class="inline-flex items-center rounded-md border border-zinc-800 bg-zinc-900 px-2.5 py-0.5 text-xs font-semibold text-zinc-50 mb-4">
+                        Rising Threat
+                    </div>
+                    <h3 class="text-xl font-bold tracking-tight text-zinc-50 mb-2">Ransomware as a Service (RaaS)</h3>
+                    <p class="text-sm text-zinc-400 leading-relaxed mb-6">
+                        The commoditization of malware means unskilled attackers can now execute devastating ransomware campaigns by renting infrastructure from organized crime groups.
+                    </p>
+                    <div class="flex items-center space-x-4 text-sm font-medium text-zinc-300">
+                        <div class="flex items-center"><i data-lucide="arrow-up-right" class="h-4 w-4 mr-1 text-zinc-500"></i> 32% YoY Increase</div>
+                        <div class="flex items-center"><i data-lucide="coins" class="h-4 w-4 mr-1 text-zinc-500"></i> $1.54M Avg Payout</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Defense in Depth Timeline -->
+        <section class="space-y-8">
+            <div class="space-y-2">
+                <h2 class="text-2xl font-semibold tracking-tight">Defense in Depth Architecture</h2>
+                <p class="text-muted-foreground text-sm">A multi-layered approach to security ensures that if one mechanism fails, another steps up to thwart an attack.</p>
+            </div>
+
+            <div class="relative border-l border-border ml-3 md:ml-4 space-y-10 py-4">
+                
+                <!-- Step 1 -->
+                <div class="relative pl-8 md:pl-12">
+                    <div class="absolute -left-3.5 md:-left-4 flex h-7 w-7 md:h-8 md:w-8 items-center justify-center rounded-full border border-border bg-background">
+                        <div class="h-2 w-2 rounded-full bg-zinc-50"></div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row sm:items-baseline gap-2 mb-1">
+                        <h3 class="text-lg font-semibold tracking-tight">1. Perimeter & Network Security</h3>
+                    </div>
+                    <p class="text-sm text-muted-foreground mb-3">The first line of defense guarding the gates of your digital infrastructure.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="inline-flex items-center rounded-full bg-zinc-900 px-2.5 py-0.5 text-xs font-medium text-zinc-300 border border-zinc-800">Next-Gen Firewalls</span>
+                        <span class="inline-flex items-center rounded-full bg-zinc-900 px-2.5 py-0.5 text-xs font-medium text-zinc-300 border border-zinc-800">Intrusion Prevention Systems (IPS)</span>
+                        <span class="inline-flex items-center rounded-full bg-zinc-900 px-2.5 py-0.5 text-xs font-medium text-zinc-300 border border-zinc-800">Secure Web Gateways</span>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="relative pl-8 md:pl-12">
+                    <div class="absolute -left-3.5 md:-left-4 flex h-7 w-7 md:h-8 md:w-8 items-center justify-center rounded-full border border-border bg-background">
+                        <div class="h-2 w-2 rounded-full bg-zinc-400"></div>
+                    </div>
+                    <h3 class="text-lg font-semibold tracking-tight mb-1">2. Identity & Access Management (IAM)</h3>
+                    <p class="text-sm text-muted-foreground mb-3">Ensuring the right people have the right access at the right time. The "Zero Trust" core.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="inline-flex items-center rounded-full bg-zinc-900 px-2.5 py-0.5 text-xs font-medium text-zinc-300 border border-zinc-800">Multi-Factor Authentication (MFA)</span>
+                        <span class="inline-flex items-center rounded-full bg-zinc-900 px-2.5 py-0.5 text-xs font-medium text-zinc-300 border border-zinc-800">Role-Based Access Control</span>
+                        <span class="inline-flex items-center rounded-full bg-zinc-900 px-2.5 py-0.5 text-xs font-medium text-zinc-300 border border-zinc-800">Single Sign-On (SSO)</span>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="relative pl-8 md:pl-12">
+                    <div class="absolute -left-3.5 md:-left-4 flex h-7 w-7 md:h-8 md:w-8 items-center justify-center rounded-full border border-border bg-background">
+                        <div class="h-2 w-2 rounded-full bg-zinc-600"></div>
+                    </div>
+                    <h3 class="text-lg font-semibold tracking-tight mb-1">3. Endpoint Security</h3>
+                    <p class="text-sm text-muted-foreground mb-3">Securing the devices (laptops, phones, servers) that connect to the network.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="inline-flex items-center rounded-full bg-zinc-900 px-2.5 py-0.5 text-xs font-medium text-zinc-300 border border-zinc-800">Endpoint Detection & Response (EDR)</span>
+                        <span class="inline-flex items-center rounded-full bg-zinc-900 px-2.5 py-0.5 text-xs font-medium text-zinc-300 border border-zinc-800">Mobile Device Management (MDM)</span>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="relative pl-8 md:pl-12">
+                    <div class="absolute -left-3.5 md:-left-4 flex h-7 w-7 md:h-8 md:w-8 items-center justify-center rounded-full border border-border bg-background">
+                        <div class="h-2 w-2 rounded-full bg-zinc-700"></div>
+                    </div>
+                    <h3 class="text-lg font-semibold tracking-tight mb-1">4. Data Security & Backups</h3>
+                    <p class="text-sm text-muted-foreground mb-3">Protecting the data itself and ensuring it can be recovered in worst-case scenarios.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="inline-flex items-center rounded-full bg-zinc-900 px-2.5 py-0.5 text-xs font-medium text-zinc-300 border border-zinc-800">End-to-End Encryption</span>
+                        <span class="inline-flex items-center rounded-full bg-zinc-900 px-2.5 py-0.5 text-xs font-medium text-zinc-300 border border-zinc-800">Data Loss Prevention (DLP)</span>
+                        <span class="inline-flex items-center rounded-full bg-zinc-900 px-2.5 py-0.5 text-xs font-medium text-zinc-300 border border-zinc-800">Immutable Backups</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="mt-12 pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between text-xs text-muted-foreground">
+            <p>© 2026 Security Intelligence Report. Styled with Tailwind CSS.</p>
+            <div class="flex items-center space-x-4 mt-4 md:mt-0">
+                <a href="#" class="hover:text-zinc-50 transition-colors flex items-center"><i data-lucide="download" class="h-3 w-3 mr-1"></i> Download PDF</a>
+                <a href="#" class="hover:text-zinc-50 transition-colors flex items-center"><i data-lucide="share-2" class="h-3 w-3 mr-1"></i> Share</a>
+            </div>
+        </footer>
+
+    </main>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+    </script>
+</body>
+</html>
